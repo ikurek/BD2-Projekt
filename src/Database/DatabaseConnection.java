@@ -1,10 +1,9 @@
 package Database;
 
 
-import Model.Team;
-
-import java.sql.*;
-import java.util.ArrayList;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class DatabaseConnection {
 
@@ -44,7 +43,7 @@ public class DatabaseConnection {
                 }
             }
         } else {
-            System.out.println("Database connection inSuccesfullystance found.");
+            System.out.println("Database connection instance found.");
         }
 
         return INSTANCE;
@@ -54,26 +53,5 @@ public class DatabaseConnection {
         return connection;
     }
 
-    public ArrayList<Team> getTeams() {
 
-        ArrayList<Team> listOfTeamsFromSQL = new ArrayList<>();
-
-        try {
-            Statement sqlStatement = connection.createStatement();
-            ResultSet sqlStatementResult = sqlStatement.executeQuery("SELECT * FROM teams");
-            while (sqlStatementResult.next()) {
-                listOfTeamsFromSQL.add(new Team(
-                        sqlStatementResult.getInt("team_id"),
-                        sqlStatementResult.getString("team_name"),
-                        sqlStatementResult.getInt("team_players")
-                ));
-            }
-
-            return listOfTeamsFromSQL;
-        } catch (SQLException sqlException) {
-            System.out.println("Couldn't create sql statement for getTeams() in DatabaseConnection");
-        }
-
-        return listOfTeamsFromSQL;
-    }
 }
