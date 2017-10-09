@@ -31,18 +31,22 @@ class Main {
 
                 case 1:
 
-                    int id;
                     String name;
-                    int players;
+                    String country;
+                    String league;
+                    int rank;
 
-                    System.out.print("id: ");
-                    id = scanner.nextInt();
+
                     System.out.print("name: ");
                     name = scanner.next();
-                    System.out.print("players: ");
-                    players = scanner.nextInt();
+                    System.out.print("country: ");
+                    country = scanner.next();
+                    System.out.print("league: ");
+                    league = scanner.next();
+                    System.out.print("rank: ");
+                    rank = scanner.nextInt();
 
-                    databaseFactory.addTeam(new Team(id, name, players));
+                    databaseFactory.addTeam(new Team(0, name, country, league, rank));
                     System.out.println("Added new team to database");
                     break;
 
@@ -51,7 +55,8 @@ class Main {
                     ArrayList<Team> listOfTeams = databaseFactory.getTeams();
                     System.out.println("Retrieved from SQL:");
                     for (Team team : listOfTeams) {
-                        System.out.println(team.getId() + " | " + team.getName() + " | " + team.getPlayers());
+                        System.out.println(team.getId() + " | " + team.getName() + " | " + team.getCountry() + " | " + team.getLeague() + " | " + team.getRank());
+
                     }
 
                     break;
@@ -63,7 +68,7 @@ class Main {
                     nameToFind = scanner.next();
                     Team team = databaseFactory.findTeamByName(nameToFind);
                     if (team != null) {
-                        System.out.println(team.getId() + " | " + team.getName() + " | " + team.getPlayers());
+                        System.out.println(team.getId() + " | " + team.getName() + " | " + team.getCountry() + " | " + team.getLeague() + " | " + team.getRank());
                     } else {
                         System.out.println("No team found for given name :-(");
                     }
@@ -83,20 +88,22 @@ class Main {
                     listOfTeams = databaseFactory.getTeams();
                     int index = 0;
                     for (Team teamInList : listOfTeams) {
-                        System.out.println(index + ". " + teamInList.getId() + " | " + teamInList.getName() + " | " + teamInList.getPlayers());
+                        System.out.println(index + ". " + teamInList.getId() + " | " + teamInList.getName() + " | " + teamInList.getCountry() + " | " + teamInList.getLeague() + " | " + teamInList.getRank());
                         index++;
                     }
                     System.out.print("Selection: ");
                     team = listOfTeams.get(scanner.nextInt());
 
-                    System.out.print("New id: ");
-                    id = scanner.nextInt();
                     System.out.print("New name: ");
                     name = scanner.next();
-                    System.out.print("New players: ");
-                    players = scanner.nextInt();
+                    System.out.print("New country: ");
+                    country = scanner.next();
+                    System.out.print("New league: ");
+                    league = scanner.next();
+                    System.out.print("New rank: ");
+                    rank = scanner.nextInt();
 
-                    databaseFactory.updateTeam(team.getName(), new Team(id, name, players));
+                    databaseFactory.updateTeam(team.getName(), new Team(0, name, country, league, rank));
 
                     break;
 

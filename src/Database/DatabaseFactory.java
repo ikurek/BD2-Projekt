@@ -30,9 +30,11 @@ public class DatabaseFactory {
             ResultSet sqlStatementResult = sqlStatement.executeQuery();
             while (sqlStatementResult.next()) {
                 listOfTeamsFromSQL.add(new Team(
-                        sqlStatementResult.getInt("team_id"),
-                        sqlStatementResult.getString("team_name"),
-                        sqlStatementResult.getInt("team_players")
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getString("name"),
+                        sqlStatementResult.getString("country"),
+                        sqlStatementResult.getString("league"),
+                        sqlStatementResult.getInt("rank")
                 ));
             }
 
@@ -55,10 +57,11 @@ public class DatabaseFactory {
     public void addTeam(Team team) {
         try {
 
-            PreparedStatement sqlStatement = connection.prepareStatement("INSERT INTO teams VALUES(?,?,?)");
-            sqlStatement.setInt(1, team.getId());
-            sqlStatement.setString(2, team.getName());
-            sqlStatement.setInt(3, team.getPlayers());
+            PreparedStatement sqlStatement = connection.prepareStatement("INSERT INTO teams(name, country, league, rank) VALUES(?,?,?,?)");
+            sqlStatement.setString(1, team.getName());
+            sqlStatement.setString(2, team.getCountry());
+            sqlStatement.setString(3, team.getLeague());
+            sqlStatement.setInt(4, team.getRank());
             sqlStatement.executeUpdate();
             sqlStatement.closeOnCompletion();
 
@@ -80,15 +83,17 @@ public class DatabaseFactory {
         Team team;
 
         try {
-            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM teams WHERE team_name = ?;");
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM teams WHERE name = ?;");
             sqlStatement.setString(1, teamName);
             ResultSet sqlStatementResult = sqlStatement.executeQuery();
 
             if (sqlStatementResult.next()) {
                 team = new Team(
-                        sqlStatementResult.getInt("team_id"),
-                        sqlStatementResult.getString("team_name"),
-                        sqlStatementResult.getInt("team_players")
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getString("name"),
+                        sqlStatementResult.getString("country"),
+                        sqlStatementResult.getString("league"),
+                        sqlStatementResult.getInt("rank")
                 );
                 sqlStatement.closeOnCompletion();
                 return team;
@@ -112,7 +117,7 @@ public class DatabaseFactory {
             PreparedStatement sqlStatement = connection.prepareStatement(
                     "DELETE " +
                             "FROM teams " +
-                            "WHERE team_name = ?;");
+                            "WHERE name = ?;");
             sqlStatement.setString(1, teamName);
             sqlStatement.executeUpdate();
             sqlStatement.closeOnCompletion();
@@ -132,12 +137,13 @@ public class DatabaseFactory {
         try {
             PreparedStatement sqlStatement = connection.prepareStatement(
                     "UPDATE teams " +
-                            "SET team_id = ?, team_name = ?, team_players = ?  " +
-                            "WHERE team_name = ?;");
-            sqlStatement.setInt(1, team.getId());
-            sqlStatement.setString(2, team.getName());
-            sqlStatement.setInt(3, team.getPlayers());
-            sqlStatement.setString(4, teamname);
+                            "SET name = ?, country = ?, league = ?, rank = ?  " +
+                            "WHERE name = ?;");
+            sqlStatement.setString(1, team.getName());
+            sqlStatement.setString(2, team.getCountry());
+            sqlStatement.setString(3, team.getLeague());
+            sqlStatement.setInt(4, team.getRank());
+            sqlStatement.setString(5, teamname);
             sqlStatement.executeUpdate();
             sqlStatement.closeOnCompletion();
 
