@@ -8,10 +8,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+/**
+ * Class allows to add and retrieve database data easily
+ * And cast them to objects or collections
+ */
 public class DatabaseFactory {
 
-    private Connection connection = DatabaseConnection.getInstance().getConnection();
+    private final Connection connection = DatabaseConnection.getInstance().getConnection();
 
+    /**
+     * Queries database for all teams
+     *
+     * @return ArrayList of [Team] object, containing all teams stored in PostgreSQL database
+     */
     public ArrayList<Team> getTeams() {
 
         ArrayList<Team> listOfTeamsFromSQL = new ArrayList<>();
@@ -38,6 +47,11 @@ public class DatabaseFactory {
         return listOfTeamsFromSQL;
     }
 
+    /**
+     * Stores team in PostgreSQL database
+     *
+     * @param team [Team] object to be stored in database
+     */
     public void addTeam(Team team) {
         try {
 
@@ -52,6 +66,55 @@ public class DatabaseFactory {
 
             sqlException.printStackTrace();
 
+        }
+    }
+
+    /**
+     * Queries SQL for team, using team name
+     *
+     * @param teamName Team name as String
+     * @return Null if not found, [Team] object if found
+     */
+    public Team findTeamByName(String teamName) {
+
+        Team team;
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM teams WHERE team_name = ?;");
+            sqlStatement.setString(1, teamName);
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+
+            if (sqlStatementResult.next()) {
+                team = new Team(
+                        sqlStatementResult.getInt("team_id"),
+                        sqlStatementResult.getString("team_name"),
+                        sqlStatementResult.getInt("team_players")
+                );
+                sqlStatement.closeOnCompletion();
+                return team;
+
+            }
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return null;
+    }
+
+    /**
+     * Removes entity from database using teamName
+     *
+     * @param teamName name of the team to remove
+     */
+    public void deleteTeamByName(String teamName) {
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("DELETE FROM teams WHERE team_name = ?;");
+            sqlStatement.setString(1, teamName);
+            sqlStatement.executeUpdate();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
         }
     }
 }

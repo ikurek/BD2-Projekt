@@ -5,12 +5,20 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-public class DatabaseConnection {
+/**
+ * This singleton class stores connection to PostgreSQL database
+ * Do not create new objects of this class, use getInstance() method instead!
+ */
+class DatabaseConnection {
 
     private static DatabaseConnection INSTANCE;
     private static Connection connection = null;
 
-    public DatabaseConnection() {
+    /**
+     * Constructor creates and keeps alive database connection
+     * Connection is later stored in instance of this class
+     */
+    private DatabaseConnection() {
 
         try {
             Class.forName("org.postgresql.Driver");
@@ -34,7 +42,13 @@ public class DatabaseConnection {
         }
     }
 
-    public static DatabaseConnection getInstance() {
+    /**
+     * This method is a thread-safe Java singleton handler
+     * It detects if new object should be created, or should it be retrieved from already existing instance
+     *
+     * @return an object of type [DatabaseConnection]
+     */
+    static DatabaseConnection getInstance() {
         if (INSTANCE == null) {
             synchronized (DatabaseConnection.class) {
                 if (INSTANCE == null) {
@@ -49,7 +63,12 @@ public class DatabaseConnection {
         return INSTANCE;
     }
 
-    public Connection getConnection() {
+    /**
+     * Required by database factory to call statements
+     *
+     * @return [Connection] object created by this class constructor
+     */
+    Connection getConnection() {
         return connection;
     }
 

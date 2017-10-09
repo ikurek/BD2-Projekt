@@ -1,5 +1,9 @@
 package Model;
 
+/**
+ * This is a basic data class for Team
+ * Java representation to SQL table /teams/ entity
+ */
 public class Team {
 
     private int id = 0;
