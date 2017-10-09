@@ -109,9 +109,37 @@ public class DatabaseFactory {
      */
     public void deleteTeamByName(String teamName) {
         try {
-            PreparedStatement sqlStatement = connection.prepareStatement("DELETE FROM teams WHERE team_name = ?;");
+            PreparedStatement sqlStatement = connection.prepareStatement(
+                    "DELETE " +
+                            "FROM teams " +
+                            "WHERE team_name = ?;");
             sqlStatement.setString(1, teamName);
             sqlStatement.executeUpdate();
+            sqlStatement.closeOnCompletion();
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+    }
+
+    /**
+     * Updates entity in SQL using it's name and [Team] object
+     *
+     * @param teamname Name of the team that will be updated
+     * @param team     [Team] object containing data, that will be used to update entity
+     */
+    public void updateTeam(String teamname, Team team) {
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement(
+                    "UPDATE teams " +
+                            "SET team_id = ?, team_name = ?, team_players = ?  " +
+                            "WHERE team_name = ?;");
+            sqlStatement.setInt(1, team.getId());
+            sqlStatement.setString(2, team.getName());
+            sqlStatement.setInt(3, team.getPlayers());
+            sqlStatement.setString(4, teamname);
+            sqlStatement.executeUpdate();
+            sqlStatement.closeOnCompletion();
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();

@@ -18,6 +18,7 @@ class Main {
             System.out.println("2. Show teams in SQL");
             System.out.println("3. Find team by name");
             System.out.println("4. Delete team by name");
+            System.out.println("5. Edit team");
             System.out.println("0. Exit");
             System.out.print("Selection: ");
 
@@ -74,6 +75,29 @@ class Main {
                     System.out.print("name: ");
                     nameToDelete = scanner.next();
                     databaseFactory.deleteTeamByName(nameToDelete);
+                    break;
+
+                case 5:
+
+                    System.out.println("Select team to edit:");
+                    listOfTeams = databaseFactory.getTeams();
+                    int index = 0;
+                    for (Team teamInList : listOfTeams) {
+                        System.out.println(index + ". " + teamInList.getId() + " | " + teamInList.getName() + " | " + teamInList.getPlayers());
+                        index++;
+                    }
+                    System.out.print("Selection: ");
+                    team = listOfTeams.get(scanner.nextInt());
+
+                    System.out.print("New id: ");
+                    id = scanner.nextInt();
+                    System.out.print("New name: ");
+                    name = scanner.next();
+                    System.out.print("New players: ");
+                    players = scanner.nextInt();
+
+                    databaseFactory.updateTeam(team.getName(), new Team(id, name, players));
+
                     break;
 
             }
