@@ -3,13 +3,14 @@ package Database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 /**
  * This singleton class stores connection to PostgreSQL database
  * Do not create new objects of this class, use getInstance() method instead!
  */
-class DatabaseConnection {
+public class DatabaseConnection {
 
     private static DatabaseConnection INSTANCE;
     private static Connection connection = null;
@@ -48,7 +49,7 @@ class DatabaseConnection {
      *
      * @return an object of type [DatabaseConnection]
      */
-    static DatabaseConnection getInstance() {
+    public static DatabaseConnection getInstance() {
         if (INSTANCE == null) {
             synchronized (DatabaseConnection.class) {
                 if (INSTANCE == null) {
@@ -70,6 +71,44 @@ class DatabaseConnection {
      */
     Connection getConnection() {
         return connection;
+    }
+
+    /**
+     * This method drops all tables in database and recreates them
+     * Removes all entries from database
+     */
+    public void rebuildDatabase() {
+
+        System.out.println("Rebuilding database...");
+
+        try {
+
+            PreparedStatement dropStatement = connection.prepareStatement(
+                    "DROP TABLE IF EXISTS teams; " +
+                            "DROP TABLE IF EXISTS players; " +
+                            "DROP TABLE IF EXISTS countries; " +
+                            "DROP TABLE IF EXISTS leagues;");
+
+            dropStatement.execute();
+
+            PreparedStatement createStatement = connection.prepareStatement(
+                    "CREATE TABLE IF NOT EXISTS teams (id SERIAL, name TEXT, country TEXT, league TEXT, rank INTEGER); " +
+                            "CREATE TABLE IF NOT EXISTS players (id SERIAL, name TEXT, surname TEXT, team TEXT, rank INTEGER); " +
+                            "CREATE TABLE IF NOT EXISTS countries (id SERIAL, name TEXT); " +
+                            "CREATE TABLE IF NOT EXISTS leagues (id SERIAL, name TEXT);");
+            createStatement.execute();
+
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        System.out.println("Database rebuild finished!");
+
+    }
+
+    private void insertSampleData() {
+        //TODO: Not yet implemented :-(
     }
 
 

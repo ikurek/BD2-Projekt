@@ -1,3 +1,4 @@
+import Database.DatabaseConnection;
 import Database.PlayerFactory;
 import Database.TeamFactory;
 import Model.Player;
@@ -8,6 +9,7 @@ import java.util.Scanner;
 
 class Main {
 
+    private static final DatabaseConnection DATABASE_CONNECTION = DatabaseConnection.getInstance();
     private static final TeamFactory TEAM_FACTORY = new TeamFactory();
     private static final PlayerFactory PLAYER_FACTORY = new PlayerFactory();
 
@@ -27,6 +29,7 @@ class Main {
             System.out.println("8. Find player");
             System.out.println("9. Delete player");
             System.out.println("10. Edit player");
+            System.out.println("99. Recreate database");
             System.out.println("0. Exit");
             System.out.print("Selection: ");
 
@@ -35,6 +38,13 @@ class Main {
                 case 0:
 
                     System.exit(0);
+
+                    break;
+
+                case 99:
+
+                    DATABASE_CONNECTION.rebuildDatabase();
+
                     break;
 
                 case 1:
@@ -170,6 +180,31 @@ class Main {
                     System.out.print("surname: ");
                     surname = scanner.next();
                     PLAYER_FACTORY.deletePlayer(PLAYER_FACTORY.findPlayerByName(nameToDelete, surname).get(0));
+                    break;
+
+                case 10:
+
+                    System.out.println("Select team to edit:");
+                    listOfPlayers = PLAYER_FACTORY.getPlayers();
+                    index = 0;
+                    for (Player playerInList : listOfPlayers) {
+                        System.out.println(index + ". " + playerInList.getId() + " | " + playerInList.getName() + " | " + playerInList.getSurname() + " | " + playerInList.getTeam() + " | " + playerInList.getRank());
+                        index++;
+                    }
+                    System.out.print("Selection: ");
+                    Player player = listOfPlayers.get(scanner.nextInt());
+
+                    System.out.print("New name: ");
+                    name = scanner.next();
+                    System.out.print("New surname: ");
+                    surname = scanner.next();
+                    System.out.print("New team: ");
+                    teamName = scanner.next();
+                    System.out.print("New rank: ");
+                    rank = scanner.nextInt();
+
+                    PLAYER_FACTORY.updatePlayer(player, new Player(player.getId(), name, surname, teamName, rank));
+
                     break;
             }
         }
