@@ -18,7 +18,7 @@ class Main {
         System.out.println("BD2-Projekt early");
 
         while (true) {
-            System.out.println("\n\nSelect action:");
+            System.out.println("\nSelect action:");
             System.out.println("1. Add team");
             System.out.println("2. Show teams");
             System.out.println("3. Find team");
