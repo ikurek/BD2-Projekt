@@ -1,6 +1,6 @@
 import Database.DatabaseConnection;
-import Database.PlayerFactory;
-import Database.TeamFactory;
+import Factory.PlayerFactory;
+import Factory.TeamFactory;
 import Model.Player;
 import Model.Team;
 
@@ -15,7 +15,7 @@ class Main {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println("BD2-Projekt early");
+        System.out.println("BD2-Projekt alpha");
 
         while (true) {
             System.out.println("\nSelect action:");

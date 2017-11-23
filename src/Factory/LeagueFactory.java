@@ -1,6 +1,7 @@
-package Database;
+package Factory;
 
-import Model.Country;
+import Database.DatabaseConnection;
+import Model.League;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,24 +9,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-public class CountryFactory {
+public class LeagueFactory {
 
     private final Connection connection = DatabaseConnection.getInstance().getConnection();
 
     /**
-     * Queries database for all countries
+     * Queries database for all leagues
      *
-     * @return ArrayList of [Country] object, containing all countries stored in PostgreSQL database
+     * @return ArrayList of [League] object, containing all leagues stored in PostgreSQL database
      */
-    public ArrayList<Country> getCountries() {
+    public ArrayList<League> getLeagues() {
 
-        ArrayList<Country> listOfCountries = new ArrayList<>();
+        ArrayList<League> listOfLeagues = new ArrayList<>();
 
         try {
-            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM countries");
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM leagues");
             ResultSet sqlStatementResult = sqlStatement.executeQuery();
             while (sqlStatementResult.next()) {
-                listOfCountries.add(new Country(
+                listOfLeagues.add(new League(
                         sqlStatementResult.getInt("id"),
                         sqlStatementResult.getString("name")
                 ));
@@ -33,25 +34,25 @@ public class CountryFactory {
 
             sqlStatement.closeOnCompletion();
 
-            return listOfCountries;
+            return listOfLeagues;
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
 
-        return listOfCountries;
+        return listOfLeagues;
     }
 
     /**
-     * Stores country in PostgreSQL database
+     * Stores league in PostgreSQL database
      *
-     * @param country [Country] object to be stored in database
+     * @param league [League] object to be stored in database
      */
-    public void addCountry(Country country) {
+    public void addLeague(League league) {
         try {
 
-            PreparedStatement sqlStatement = connection.prepareStatement("INSERT INTO countries(name) VALUES(?)");
-            sqlStatement.setString(1, country.getName());
+            PreparedStatement sqlStatement = connection.prepareStatement("INSERT INTO leagues(name) VALUES(?)");
+            sqlStatement.setString(1, league.getName());
             sqlStatement.executeUpdate();
             sqlStatement.closeOnCompletion();
 
@@ -65,26 +66,26 @@ public class CountryFactory {
     /**
      * Queries SQL for countries, using country name
      *
-     * @param countryName name of country to find
-     * @return Null if not found, ArrayList<Country> object if found
+     * @param leagueName name of league to find
+     * @return Null if not found, ArrayList<League> object if found
      */
-    public ArrayList<Country> findCountryByName(String countryName) {
+    public ArrayList<League> findLeagueByName(String leagueName) {
 
-        ArrayList<Country> listOfCountries = new ArrayList<>();
+        ArrayList<League> listOfLeagues = new ArrayList<>();
 
         try {
-            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM countries WHERE name = ?;");
-            sqlStatement.setString(1, countryName);
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM leagues WHERE name = ?;");
+            sqlStatement.setString(1, leagueName);
             ResultSet sqlStatementResult = sqlStatement.executeQuery();
 
             while (sqlStatementResult.next()) {
-                listOfCountries.add(new Country(
+                listOfLeagues.add(new League(
                         sqlStatementResult.getInt("id"),
                         sqlStatementResult.getString("name")
                 ));
             }
 
-            return listOfCountries;
+            return listOfLeagues;
 
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
@@ -94,18 +95,18 @@ public class CountryFactory {
     }
 
     /**
-     * Removes entity from table /countries/
+     * Removes entity from table /leagues/
      *
-     * @param country [Country] object to remove from database
+     * @param league [League] object to remove from database
      */
-    public void deleteCountry(Country country) {
+    public void deleteLeague(League league) {
         try {
             PreparedStatement sqlStatement = connection.prepareStatement(
                     "DELETE " +
-                            "FROM countries " +
+                            "FROM leagues " +
                             "WHERE id = ? AND name = ?;");
-            sqlStatement.setInt(1, country.getId());
-            sqlStatement.setString(2, country.getName());
+            sqlStatement.setInt(1, league.getId());
+            sqlStatement.setString(2, league.getName());
             sqlStatement.executeUpdate();
             sqlStatement.closeOnCompletion();
 

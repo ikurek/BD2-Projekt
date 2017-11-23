@@ -2,7 +2,7 @@ package Model;
 
 public class Country {
 
-    private int id = 0;
+    private int id;
     private String name;
 
     public Country(int id, String name) {

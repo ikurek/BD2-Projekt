@@ -1,5 +1,6 @@
-package Database;
+package Factory;
 
+import Database.DatabaseConnection;
 import Model.Player;
 
 import java.sql.Connection;

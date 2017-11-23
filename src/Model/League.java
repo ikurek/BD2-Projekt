@@ -1,7 +1,7 @@
 package Model;
 
 public class League {
-    private int id = 0;
+    private int id;
     private String name;
 
 

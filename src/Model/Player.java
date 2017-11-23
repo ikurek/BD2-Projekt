@@ -1,7 +1,7 @@
 package Model;
 
 public class Player {
-    private int id = 0;
+    private int id;
     private String name;
     private String surname;
     private String team;

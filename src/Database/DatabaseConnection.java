@@ -19,13 +19,13 @@ public class DatabaseConnection {
      * Constructor creates and keeps alive database connection
      * Connection is later stored in instance of this class
      */
-    private DatabaseConnection() {
+    public DatabaseConnection() {
 
         try {
             Class.forName("org.postgresql.Driver");
 
             connection = DriverManager.getConnection(
-                    "jdbc:postgresql://127.0.0.1:5432/BD2",
+                    "jdbc:postgresql://127.0.0.1:5432/BD",
                     "igor",
                     "");
             System.out.println("Successfully connected to database!");
@@ -69,7 +69,7 @@ public class DatabaseConnection {
      *
      * @return [Connection] object created by this class constructor
      */
-    Connection getConnection() {
+    public Connection getConnection() {
         return connection;
     }
 
@@ -87,7 +87,11 @@ public class DatabaseConnection {
                     "DROP TABLE IF EXISTS teams; " +
                             "DROP TABLE IF EXISTS players; " +
                             "DROP TABLE IF EXISTS countries; " +
-                            "DROP TABLE IF EXISTS leagues;");
+                            "DROP TABLE IF EXISTS leagues;" +
+                            "DROP TABLE IF EXISTS seasons;" +
+                            "DROP TABLE IF EXISTS season_teams;" +
+                            "DROP TABLE IF EXISTS season_players;" +
+                            "DROP TABLE IF EXISTS season_matches;");
 
             dropStatement.execute();
 
@@ -95,7 +99,11 @@ public class DatabaseConnection {
                     "CREATE TABLE IF NOT EXISTS teams (id SERIAL, name TEXT, country TEXT, league TEXT, rank INTEGER); " +
                             "CREATE TABLE IF NOT EXISTS players (id SERIAL, name TEXT, surname TEXT, team TEXT, rank INTEGER); " +
                             "CREATE TABLE IF NOT EXISTS countries (id SERIAL, name TEXT); " +
-                            "CREATE TABLE IF NOT EXISTS leagues (id SERIAL, name TEXT);");
+                            "CREATE TABLE IF NOT EXISTS leagues (id SERIAL, name TEXT);" +
+                            "CREATE TABLE IF NOT EXISTS seasons(id SERIAL, name TEXT, open_date DATE, close_date DATE, winner TEXT);" +
+                            "CREATE TABLE IF NOT EXISTS season_teams(season_id INTEGER, team_id INTEGER, growth TEXT, matches INTEGER, matches_won INTEGER, matches_lost INTEGER, goals INTEGER, goals_lost INTEGER, ladder INTEGER);" +
+                            "CREATE TABLE IF NOT EXISTS season_players(season_id INTEGER, plyer_id INTEGER, goals INTEGER, assists INTEGER, fouls INTEGER, cards INTEGER, rate INTEGER);" +
+                            "CREATE TABLE IF NOT EXISTS season_matches(season_id INTEGER, team1 TEXT, team2 TEXT, goals1 TEXT, goals2 TEXT);");
             createStatement.execute();
 
 

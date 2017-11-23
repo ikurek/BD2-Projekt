@@ -1,5 +1,6 @@
-package Database;
+package Factory;
 
+import Database.DatabaseConnection;
 import Model.Team;
 
 import java.sql.Connection;

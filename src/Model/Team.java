@@ -6,7 +6,7 @@ package Model;
  */
 public class Team {
 
-    private int id = 0;
+    private int id;
     private String name;
     private String country;
     private String league;
