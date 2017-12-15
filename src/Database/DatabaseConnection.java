@@ -57,8 +57,6 @@ public class DatabaseConnection {
                     System.out.println("Database connection instance not found, created new one.");
                 }
             }
-        } else {
-            System.out.println("Database connection instance found.");
         }
 
         return INSTANCE;
@@ -101,9 +99,9 @@ public class DatabaseConnection {
                             "CREATE TABLE IF NOT EXISTS countries (id SERIAL, name TEXT); " +
                             "CREATE TABLE IF NOT EXISTS leagues (id SERIAL, name TEXT);" +
                             "CREATE TABLE IF NOT EXISTS seasons(id SERIAL, name TEXT, open_date DATE, close_date DATE, winner TEXT);" +
-                            "CREATE TABLE IF NOT EXISTS season_teams(season_id INTEGER, team_id INTEGER, growth TEXT, matches INTEGER, matches_won INTEGER, matches_lost INTEGER, goals INTEGER, goals_lost INTEGER, ladder INTEGER);" +
-                            "CREATE TABLE IF NOT EXISTS season_players(season_id INTEGER, plyer_id INTEGER, goals INTEGER, assists INTEGER, fouls INTEGER, cards INTEGER, rate INTEGER);" +
-                            "CREATE TABLE IF NOT EXISTS season_matches(season_id INTEGER, team1 TEXT, team2 TEXT, goals1 TEXT, goals2 TEXT);");
+                            "CREATE TABLE IF NOT EXISTS season_teams(id SERIAL, season_id INTEGER, team_id INTEGER, growth TEXT, matches INTEGER, matches_won INTEGER, matches_lost INTEGER, goals INTEGER, goals_lost INTEGER, ladder INTEGER);" +
+                            "CREATE TABLE IF NOT EXISTS season_players(id SERIAL, season_id INTEGER, plyer_id INTEGER, goals INTEGER, assists INTEGER, fouls INTEGER, cards INTEGER, rating INTEGER);" +
+                            "CREATE TABLE IF NOT EXISTS season_matches(id SERIAL, season_id INTEGER, team1 TEXT, team2 TEXT, goals1 TEXT, goals2 TEXT);");
             createStatement.execute();
 
 
@@ -113,10 +111,6 @@ public class DatabaseConnection {
 
         System.out.println("Database rebuild finished!");
 
-    }
-
-    private void insertSampleData() {
-        //TODO: Not yet implemented :-(
     }
 
 

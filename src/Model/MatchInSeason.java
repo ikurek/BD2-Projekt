@@ -2,11 +2,37 @@ package Model;
 
 public class MatchInSeason {
 
-    int seasonID;
-    String team1;
-    String team2;
-    int goals1;
-    int goals2;
+    private int id;
+    private int seasonID;
+    private String team1;
+    private String team2;
+    private int goals1;
+    private int goals2;
+
+    public MatchInSeason(int id, int seasonID, String team1, String team2, int goals1, int goals2) {
+        this.id = id;
+        this.seasonID = seasonID;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.goals1 = goals1;
+        this.goals2 = goals2;
+    }
+
+    public MatchInSeason(int seasonID, String team1, String team2, int goals1, int goals2) {
+        this.seasonID = seasonID;
+        this.team1 = team1;
+        this.team2 = team2;
+        this.goals1 = goals1;
+        this.goals2 = goals2;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getSeasonID() {
         return seasonID;

@@ -1,14 +1,30 @@
 package Model;
 
-import java.util.Date;
+
+import java.sql.Date;
 
 public class Season {
 
-    int id;
-    String name;
-    Date openDate;
-    Date closeDate;
-    String winner;
+    private int id;
+    private String name;
+    private Date openDate;
+    private Date closeDate;
+    private String winner;
+
+    public Season(int id, String name, Date openDate, Date closeDate, String winner) {
+        this.id = id;
+        this.name = name;
+        this.openDate = openDate;
+        this.closeDate = closeDate;
+        this.winner = winner;
+    }
+
+    public Season(String name, Date openDate, Date closeDate, String winner) {
+        this.name = name;
+        this.openDate = openDate;
+        this.closeDate = closeDate;
+        this.winner = winner;
+    }
 
     public int getId() {
         return id;
