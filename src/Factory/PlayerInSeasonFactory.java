@@ -49,6 +49,37 @@ public class PlayerInSeasonFactory {
         return null;
     }
 
+    public static ArrayList<PlayerInSeason> getPlayersInSeason(Connection connection) {
+
+        ArrayList<PlayerInSeason> listOfPlayers = new ArrayList<>();
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM season_players");
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+            while (sqlStatementResult.next()) {
+                listOfPlayers.add(new PlayerInSeason(
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getInt("season_id"),
+                        sqlStatementResult.getInt("player_id"),
+                        sqlStatementResult.getInt("goals"),
+                        sqlStatementResult.getInt("assists"),
+                        sqlStatementResult.getInt("fouls"),
+                        sqlStatementResult.getInt("cards"),
+                        sqlStatementResult.getInt("rating")
+                ));
+            }
+
+            sqlStatement.closeOnCompletion();
+
+            return listOfPlayers;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return null;
+    }
+
 
     public void addPlayerInSeason(PlayerInSeason playerInSeason) {
         try {

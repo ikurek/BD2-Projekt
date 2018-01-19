@@ -43,6 +43,31 @@ public class CountryFactory {
         return listOfCountries;
     }
 
+    public static ArrayList<Country> getCountries(Connection connection) {
+
+        ArrayList<Country> listOfCountries = new ArrayList<>();
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM countries");
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+            while (sqlStatementResult.next()) {
+                listOfCountries.add(new Country(
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getString("name")
+                ));
+            }
+
+            sqlStatement.closeOnCompletion();
+
+            return listOfCountries;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return listOfCountries;
+    }
+
     /**
      * Stores country in PostgreSQL database
      *

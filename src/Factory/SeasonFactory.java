@@ -46,6 +46,33 @@ public class SeasonFactory {
         return listOfSeasons;
     }
 
+    public static ArrayList<Season> getSeasons(Connection connection) {
+
+        ArrayList<Season> listOfSeasons = new ArrayList<>();
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM seasons");
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+            while (sqlStatementResult.next()) {
+                listOfSeasons.add(new Season(
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getString("name"),
+                        sqlStatementResult.getDate("open_date"),
+                        sqlStatementResult.getDate("close_date"),
+                        sqlStatementResult.getString("winner")
+                ));
+            }
+
+            sqlStatement.closeOnCompletion();
+
+            return listOfSeasons;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return listOfSeasons;
+    }
 
     public void addSeason(Season season) {
         try {

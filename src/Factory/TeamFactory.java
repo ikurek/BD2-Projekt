@@ -50,6 +50,34 @@ public class TeamFactory {
         return listOfTeamsFromSQL;
     }
 
+    public static ArrayList<Team> getTeams(Connection connection) {
+
+        ArrayList<Team> listOfTeamsFromSQL = new ArrayList<>();
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM teams");
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+            while (sqlStatementResult.next()) {
+                listOfTeamsFromSQL.add(new Team(
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getString("name"),
+                        sqlStatementResult.getString("country"),
+                        sqlStatementResult.getString("league"),
+                        sqlStatementResult.getInt("rank")
+                ));
+            }
+
+            sqlStatement.closeOnCompletion();
+
+            return listOfTeamsFromSQL;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return listOfTeamsFromSQL;
+    }
+
     /**
      * Stores team in PostgreSQL database
      *

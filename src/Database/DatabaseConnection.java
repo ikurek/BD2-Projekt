@@ -1,6 +1,5 @@
 package Database;
 
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -28,6 +27,32 @@ public class DatabaseConnection {
                     "jdbc:postgresql://127.0.0.1:5432/BD",
                     "igor",
                     "");
+            System.out.println("Successfully connected to database!");
+
+            rebuildDatabase();
+
+        } catch (ClassNotFoundException e) {
+
+            e.printStackTrace();
+            System.out.append("No PostgreSQL library found, include library in project directory.");
+
+        } catch (SQLException e) {
+
+            e.printStackTrace();
+            System.out.append("Database login failed! Check Your username and/or password.");
+
+        }
+    }
+
+    public DatabaseConnection(String password, String username) {
+
+        try {
+            Class.forName("org.postgresql.Driver");
+
+            connection = DriverManager.getConnection(
+                    "jdbc:postgresql://127.0.0.1:5432/BD",
+                    username,
+                    password);
             System.out.println("Successfully connected to database!");
 
         } catch (ClassNotFoundException e) {
@@ -100,7 +125,7 @@ public class DatabaseConnection {
                             "CREATE TABLE IF NOT EXISTS leagues (id SERIAL, name TEXT);" +
                             "CREATE TABLE IF NOT EXISTS seasons(id SERIAL, name TEXT, open_date DATE, close_date DATE, winner TEXT);" +
                             "CREATE TABLE IF NOT EXISTS season_teams(id SERIAL, season_id INTEGER, team_id INTEGER, growth TEXT, matches INTEGER, matches_won INTEGER, matches_lost INTEGER, goals INTEGER, goals_lost INTEGER, ladder INTEGER);" +
-                            "CREATE TABLE IF NOT EXISTS season_players(id SERIAL, season_id INTEGER, plyer_id INTEGER, goals INTEGER, assists INTEGER, fouls INTEGER, cards INTEGER, rating INTEGER);" +
+                            "CREATE TABLE IF NOT EXISTS season_players(id SERIAL, season_id INTEGER, player_id INTEGER, goals INTEGER, assists INTEGER, fouls INTEGER, cards INTEGER, rating INTEGER);" +
                             "CREATE TABLE IF NOT EXISTS season_matches(id SERIAL, season_id INTEGER, team1 TEXT, team2 TEXT, goals1 TEXT, goals2 TEXT);");
             createStatement.execute();
 

@@ -43,6 +43,31 @@ public class LeagueFactory {
         return listOfLeagues;
     }
 
+    public static ArrayList<League> getLeagues(Connection connection) {
+
+        ArrayList<League> listOfLeagues = new ArrayList<>();
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM leagues");
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+            while (sqlStatementResult.next()) {
+                listOfLeagues.add(new League(
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getString("name")
+                ));
+            }
+
+            sqlStatement.closeOnCompletion();
+
+            return listOfLeagues;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return listOfLeagues;
+    }
+
     /**
      * Stores league in PostgreSQL database
      *

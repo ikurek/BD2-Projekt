@@ -42,6 +42,35 @@ public class MatchInSeasonFactory {
         return listOfMatchesInSeason;
     }
 
+    public static ArrayList<MatchInSeason> getMatchesInSeason(Connection connection) {
+
+        ArrayList<MatchInSeason> listOfMatchesInSeason = new ArrayList<>();
+
+        try {
+            PreparedStatement sqlStatement = connection.prepareStatement("SELECT * FROM season_matches");
+            ResultSet sqlStatementResult = sqlStatement.executeQuery();
+            while (sqlStatementResult.next()) {
+                listOfMatchesInSeason.add(new MatchInSeason(
+                        sqlStatementResult.getInt("id"),
+                        sqlStatementResult.getInt("season_id"),
+                        sqlStatementResult.getString("team1"),
+                        sqlStatementResult.getString("team2"),
+                        sqlStatementResult.getInt("goals1"),
+                        sqlStatementResult.getInt("goals2")
+                ));
+            }
+
+            sqlStatement.closeOnCompletion();
+
+            return listOfMatchesInSeason;
+
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return listOfMatchesInSeason;
+    }
+
     public void addMatchInSeason(MatchInSeason matchInSeason) {
         try {
 
